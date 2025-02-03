@@ -1,2 +1,3 @@
 # ZCalc
-An Online Calculator
+
+A Basic Online Calculator built using html, css, javascript
