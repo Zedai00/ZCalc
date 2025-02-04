@@ -43,6 +43,7 @@ main {
   align-items: flex-end;
   justify-content: flex-end;
   flex-direction: column;
+  white-space: pre;
 }
 
 .buttons {
@@ -54,6 +55,7 @@ main {
   background-color: #4b352d;
   width: 100%;
   justify-content: center;
+  align-items: center;
 }
 
 .row {
@@ -77,6 +79,7 @@ main {
 .right-side {
   display: flex;
   flex-direction: column;
+  height: 97%;
 }
 
 #btn-0 {

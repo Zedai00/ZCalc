@@ -1,60 +1,55 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZCalc</title>
+    <link href="style.css" rel="stylesheet" />
+    <script src="script.js" defer></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ZCalc</title>
-  <link href="style.css" rel="stylesheet">
-  <script src="script.js" defer>
-  </script>
-</head>
-
-<body>
-  <header>
-    ZCalc
-  </header>
-  <main>
-    <div class="display">
-      <div id="eq">1+2</div>
-      <div id="result">3</div>
-    </div>
-    <div class="buttons">
-      <div class="left-side">
-        <div class="row">
-          <div id="btn-ce">C</div>
-          <div id="btn-div">/</div>
-          <div id="btn-mult">*</div>
+  <body>
+    <header>ZCalc</header>
+    <main>
+      <div class="display">
+        <div id="eq"></div>
+        <div id="result"></div>
+      </div>
+      <div class="buttons">
+        <div class="left-side">
+          <div class="row">
+            <div class="btn">C</div>
+            <div class="btn">/</div>
+            <div class="btn">*</div>
+          </div>
+          <div class="row">
+            <div class="btn">7</div>
+            <div class="btn">8</div>
+            <div class="btn">9</div>
+          </div>
+          <div class="row">
+            <div class="btn">4</div>
+            <div class="btn">5</div>
+            <div class="btn">6</div>
+          </div>
+          <div class="row">
+            <div class="btn">1</div>
+            <div class="btn">2</div>
+            <div class="btn">3</div>
+          </div>
+          <div class="row">
+            <div class="btn" id="btn-0">0</div>
+            <div class="btn">.</div>
+          </div>
         </div>
-        <div class="row">
-          <div id="btn-7">7</div>
-          <div id="btn-8">8</div>
-          <div id="btn-9">9</div>
-        </div>
-        <div class="row">
-          <div id="btn-4">4</div>
-          <div id="btn-5">5</div>
-          <div id="btn-6">6</div>
-        </div>
-        <div class="row">
-          <div id="btn-1">1</div>
-          <div id="btn-2">2</div>
-          <div id="btn-3">3</div>
-        </div>
-        <div class="row">
-          <div id="btn-0">0</div>
-          <div id="btn-.">.</div>
+        <div class="right-side">
+          <div class="col">
+            <div class="btn">-</div>
+            <div class="btn" id="btn-plus">+</div>
+            <div class="btn" id="btn-eq">=</div>
+          </div>
         </div>
       </div>
-      <div class="right-side">
-        <div class="col">
-          <div id="btn-sub">-</div>
-          <div id="btn-plus">+</div>
-          <div id="btn-eq">=</div>
-        </div>
-      </div>
-    </div>
-  </main>
-</body>
-
+    </main>
+  </body>
 </html>
