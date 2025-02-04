@@ -5,11 +5,21 @@ const res = document.querySelector("#result");
 eq.innerText = "";
 let dot_flag = false;
 let op_flag = false;
-
+let op_last_flag = false;
+let eq_flag = false;
+let first_pass = false;
 btns.forEach((btn) => {
   btn.addEventListener("click", (btn) => {
     const key = btn.target.innerText;
     if (isFinite(key)) {
+      if (eq_flag){
+        eq.innerText = "";
+        eq_flag = false
+      }
+      if(first_pass) {
+        op_flag = true
+      }
+      op_last_flag = false
       eq.innerText += key;
     } else if (key == "C") {
       clear();
@@ -19,10 +29,10 @@ btns.forEach((btn) => {
         return;
       }
       if (key == "=") {
+        if (!op_last_flag) {
         const result = calc();
-        eq.innerText = "";
         res.innerText = result;
-        op_flag = false;
+        eq_flag = true}
       } else if (key == "." && dot_flag == false) {
         if (!isOperand(eq.innerText.charAt(len - 2))) {
           eq.innerText += key;
@@ -32,15 +42,21 @@ btns.forEach((btn) => {
         if (isOperand(eq.innerText[len - 2])) {
           eq.innerText = replaceChar(eq.innerText, key, len - 2);
         } else if (op_flag) {
-          const result = calc();
-          res.innerText = result;
-          eq.innerText = `${result} ${key} `;
-          op_flag = false;
+          if (!eq_flag) {
+            const result = calc();
+            res.innerText = result;
+            eq.innerText = `${result} ${key} `;
+          }else {
+            result = res.innerText
+            eq_flag = false
+            eq.innerText = `${result} ${key} `;
+          }
         } else {
           eq.innerText += ` ${key} `;
           dot_flag = false;
           op_flag = true;
         }
+        op_last_flag = true
       }
     }
   });
@@ -51,9 +67,12 @@ function clear() {
   eq.innerText = "";
   dot_flag = false;
   op_flag = false;
+  first_pass = false;
+  op_last_flag = false;
 }
 
 function calc() {
+  first_pass = true
   const eqtn = eq.innerText.split(" ");
   const a = eqtn[0];
   const b = eqtn[2];
@@ -87,7 +106,11 @@ function operate(a, b, op) {
       res = mult(a, b);
       break;
     case "/":
-      res = div(a, b);
+      if (b == 0) {
+        res = "TO INFINITY AND BEYOND";
+      } else {
+        res = div(a, b);
+      }
       break;
   }
   return res.toFixed(2);
