@@ -1,16 +1,99 @@
 const btns = document.querySelectorAll(".btn");
 const eq = document.querySelector("#eq");
 const res = document.querySelector("#result");
-
+const op = ["+", "-", "*", "/"]
+let eq_flag = false
+let zero_flag = false
 eq.innerText = "";
 btns.forEach((btn) => {
   btn.addEventListener("click", (btn) => {
+    let key = btn.target.innerText
+    let [eqLen, resLen] = getLength()
+    if (zero_flag) {
+      divByZero(key, eqLen, resLen)
+    }
+    else if (isFinite(key)) {
+      // if a no is given populate the display with the number
+      if (eq_flag) {
+        clear()
+        eq_flag = false
+      }
+      populate(key)
+    } else {
+      // if an operator is given
+      if (op.includes(key)) {
+        // if an operand is already in the display
+        // allow an operator to be inserted
+        if (eqLen == 1) {
+          populate(` ${key} `)
+          eq_flag = false
+        } else if (eqLen == 2) {
+          // if an operand and an operator is 
+          // already there change the operator
+          changeOperator(key)
+          eq_flag = false
+        } else if (eqLen == 3) {
+          // if there are 3 elements 
+          // then calculate and replace 
+          // the display with result and the new operator
+          calcAndReplace(key)
+          eq_flag = false
+        }
+      } else if (key == "=") {
+        // if there are 3 elements 
+        // operand operator operand
+        // then calculate 
+        if (eqLen == 3) {
+          res.innerText = calc()
+          eq_flag = true
+        }
+      } else if (key == "C") {
+        // if clear key is given
+        // clear the display
+        clear()
+      }
+    }
   });
 });
+
+function divByZero(key, eqLen, resLen) {
+  eq.innerText = ''
+  clear_flag = true
+  zero_flag = false
+}
+
+function calcAndReplace(key) {
+  let result = calc();
+  res.innerText = result
+  if (!zero_flag) {
+    eq.innerText = `${result} ${key} `
+  }
+  else {
+    eq.innerText = ''
+  }
+
+}
+
+function getLength() {
+  let eqLen = eq.innerText.split(" ").filter(i => i).length
+  let resLen = res.innerText.split(" ").filter(i => i).length
+  return [eqLen, resLen]
+}
+
+function changeOperator(key) {
+  let len = eq.innerText.length
+  let text = eq.innerText
+  eq.innerText = text.substring(0, len - 2) + key + text.substring(len - 1);
+}
+
+function populate(key) {
+  eq.innerText += key
+}
 
 function clear() {
   res.innerText = "";
   eq.innerText = "";
+
 }
 
 function calc() {
@@ -18,7 +101,12 @@ function calc() {
   const a = eqtn[0];
   const b = eqtn[2];
   const op = eqtn[1];
-  return operate(a, b, op);
+  let res = operate(a, b, op);
+  if (isFinite(res)) {
+    return parseFloat(res)
+  } else {
+    return res
+  }
 }
 
 function replaceChar(origString, replaceChar, index) {
@@ -48,13 +136,18 @@ function operate(a, b, op) {
       break;
     case "/":
       if (b == 0) {
-        res = "TO INFINITY AND BEYOND";
+        return zeroDivideError()
       } else {
         res = div(a, b);
       }
       break;
   }
   return res.toFixed(2);
+}
+
+function zeroDivideError() {
+  zero_flag = true
+  return "TO INFINITY AND BEYOND"
 }
 
 function add(a, b) {
