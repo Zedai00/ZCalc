@@ -53,10 +53,14 @@ btns.forEach((btn) => {
         // clear the display
         clear()
       } else if (key == ".") {
+        // if an operand is there insertion of dot is allowed
+        // insert dot and disable it
         if (eqLen == 1 && dot_flag == false) {
           populate(key)
           dot_flag = true
         } else if (eqLen == 3) {
+          // if three elements are available then dot is allowed 
+          // if dot is present disable dot
           if (dot_flag) {
             populate(key)
             dot_flag = false

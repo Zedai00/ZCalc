@@ -28,7 +28,7 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 500px;
+  width: 490px;
   height: 500px;
 }
 
@@ -76,10 +76,14 @@ main {
   align-items: center;
 }
 
+.left-side {
+  margin-left: -10px;
+}
 .right-side {
   display: flex;
   flex-direction: column;
   height: 97%;
+  margin: -10px;
 }
 
 #btn-0 {
