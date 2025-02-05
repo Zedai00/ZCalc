@@ -85,6 +85,8 @@ function handleKey(key) {
     } else if (key == "⌫" || key == "Backspace") {
       if (eqLen >= 1) {
         eq.innerText = remove(eqLen);
+      } else if (eqLen == 0 && resLen == 1) {
+        clear()
       }
     }
   }
