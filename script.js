@@ -3,14 +3,15 @@ const eq = document.querySelector("#eq");
 const res = document.querySelector("#result");
 const op = ["+", "-", "*", "/"]
 let eq_flag = false
+let dot_flag = false
 let zero_flag = false
 eq.innerText = "";
 btns.forEach((btn) => {
   btn.addEventListener("click", (btn) => {
     let key = btn.target.innerText
-    let [eqLen, resLen] = getLength()
+    let eqLen = getLength()
     if (zero_flag) {
-      divByZero(key, eqLen, resLen)
+      divByZero()
     }
     else if (isFinite(key)) {
       // if a no is given populate the display with the number
@@ -51,12 +52,22 @@ btns.forEach((btn) => {
         // if clear key is given
         // clear the display
         clear()
+      } else if (key == ".") {
+        if (eqLen == 1 && dot_flag == false) {
+          populate(key)
+          dot_flag = true
+        } else if (eqLen == 3) {
+          if (dot_flag) {
+            populate(key)
+            dot_flag = false
+          }
+        }
       }
     }
   });
 });
 
-function divByZero(key, eqLen, resLen) {
+function divByZero() {
   eq.innerText = ''
   clear_flag = true
   zero_flag = false
@@ -75,9 +86,7 @@ function calcAndReplace(key) {
 }
 
 function getLength() {
-  let eqLen = eq.innerText.split(" ").filter(i => i).length
-  let resLen = res.innerText.split(" ").filter(i => i).length
-  return [eqLen, resLen]
+  return eq.innerText.split(" ").filter(i => i).length
 }
 
 function changeOperator(key) {
@@ -93,7 +102,9 @@ function populate(key) {
 function clear() {
   res.innerText = "";
   eq.innerText = "";
-
+  eq_flag = false
+  dot_flag = false
+  zero_flag = false
 }
 
 function calc() {
@@ -147,6 +158,7 @@ function operate(a, b, op) {
 
 function zeroDivideError() {
   zero_flag = true
+  eq.innerText = ''
   return "TO INFINITY AND BEYOND"
 }
 
