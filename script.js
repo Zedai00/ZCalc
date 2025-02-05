@@ -5,71 +5,99 @@ const op = ["+", "-", "*", "/"]
 let eq_flag = false
 let dot_flag = false
 let zero_flag = false
-eq.innerText = "";
+
 btns.forEach((btn) => {
   btn.addEventListener("click", (btn) => {
-    let key = btn.target.innerText
-    let eqLen = getLength()
-    if (zero_flag) {
-      divByZero()
-    }
-    else if (isFinite(key)) {
-      // if a no is given populate the display with the number
-      if (eq_flag) {
-        clear()
-        eq_flag = false
-      }
-      populate(key)
-    } else {
-      // if an operator is given
-      if (op.includes(key)) {
-        // if an operand is already in the display
-        // allow an operator to be inserted
-        if (eqLen == 1) {
-          populate(` ${key} `)
-          eq_flag = false
-        } else if (eqLen == 2) {
-          // if an operand and an operator is 
-          // already there change the operator
-          changeOperator(key)
-          eq_flag = false
-        } else if (eqLen == 3) {
-          // if there are 3 elements 
-          // then calculate and replace 
-          // the display with result and the new operator
-          calcAndReplace(key)
-          eq_flag = false
-        }
-      } else if (key == "=") {
-        // if there are 3 elements 
-        // operand operator operand
-        // then calculate 
-        if (eqLen == 3) {
-          res.innerText = calc()
-          eq_flag = true
-        }
-      } else if (key == "C") {
-        // if clear key is given
-        // clear the display
-        clear()
-      } else if (key == ".") {
-        // if an operand is there insertion of dot is allowed
-        // insert dot and disable it
-        if (eqLen == 1 && dot_flag == false) {
-          populate(key)
-          dot_flag = true
-        } else if (eqLen == 3) {
-          // if three elements are available then dot is allowed 
-          // if dot is present disable dot
-          if (dot_flag) {
-            populate(key)
-            dot_flag = false
-          }
-        }
-      }
-    }
+    let key = btn.target.innerText;
+    handleKey(key);
   });
 });
+
+document.addEventListener("keydown", (e) => {
+  console.log(e)
+  handleKey(e.key)
+})
+
+
+function handleKey(key) {
+  let [eqLen, resLen] = getLength();
+  if (zero_flag) {
+    divByZero();
+  }
+  else if (isFinite(key)) {
+    // if a no is given populate the display with the number
+    if (eq_flag) {
+      clear();
+      eq_flag = false;
+    }
+    populate(key);
+  } else {
+    // if an operator is given
+    if (op.includes(key)) {
+      // if an operand is already in the display
+      // allow an operator to be inserted
+      if (eqLen == 1) {
+        populate(` ${key} `);
+        eq_flag = false;
+      } else if (eqLen == 2) {
+        // if an operand and an operator is 
+        // already there change the operator
+        changeOperator(key);
+        eq_flag = false;
+      } else if (eqLen == 3) {
+        // if there are 3 elements 
+        // then calculate and replace 
+        // the display with result and the new operator
+        calcAndReplace(key);
+        eq_flag = false;
+      } else if (eqLen == 0 && resLen == 1) {
+        // if equation is cleared by backspace and 
+        // there is a result use that with the new operator
+        eq.innerText = `${res.innerText} ${key} `
+        eq_flag = false;
+      }
+    } else if (key == "=" || key == "Enter") {
+      // if there are 3 elements 
+      // operand operator operand
+      // then calculate 
+      if (eqLen == 3) {
+        res.innerText = calc();
+        eq_flag = true;
+      }
+    } else if (key == "C") {
+      // if clear key is given
+      // clear the display
+      clear();
+    } else if (key == ".") {
+      // if an operand is there insertion of dot is allowed
+      // insert dot and disable it
+      if (eqLen == 1 && dot_flag == false) {
+        populate(key);
+        dot_flag = true;
+      } else if (eqLen == 3) {
+        // if three elements are available then dot is allowed 
+        // if dot is present disable dot
+        if (dot_flag) {
+          populate(key);
+          dot_flag = false;
+        }
+      }
+    } else if (key == "⌫" || key == "Backspace") {
+      if (eqLen >= 1) {
+        eq.innerText = remove(eqLen);
+      }
+    }
+  }
+}
+
+function remove(len) {
+  let text = eq.innerText
+  if (len == 1 || len == 3) {
+    return text.slice(0, -1)
+  } else if (len == 2) {
+    return text.slice(0, -3)
+  }
+}
 
 function divByZero() {
   eq.innerText = ''
@@ -90,7 +118,9 @@ function calcAndReplace(key) {
 }
 
 function getLength() {
-  return eq.innerText.split(" ").filter(i => i).length
+  let eqLen = eq.innerText.split(" ").filter(i => i).length
+  let resLen = res.innerText.split(" ").filter(i => i).length
+  return [eqLen, resLen]
 }
 
 function changeOperator(key) {
